@@ -4,8 +4,10 @@ import (
 	"log"
 	"net/http"
 
-	db "main.go/pkg"
+	"main.go/pkg/api"
+	db "main.go/pkg/db"
 )
+
 
 func main() {
 	dbFile := "scheduler.db"
@@ -14,6 +16,7 @@ func main() {
 		log.Fatal("Ошибка инициализации БД:", err)
 	}
 	defer database.Close()
+	api.Init()
 	port := "7540"
 	http.Handle("/", http.FileServer(http.Dir("web")))
 	err = http.ListenAndServe(":"+port, nil)
