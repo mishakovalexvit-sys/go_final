@@ -7,8 +7,11 @@ import (
 	_ "modernc.org/sqlite"
 )
 
+var DB *sql.DB
+
 func Init(dbFile string) (*sql.DB, error) {
-	db, err := sql.Open("sqlite", dbFile)
+	var err error
+	DB, err = sql.Open("sqlite", dbFile)
 	if err != nil {
 		log.Println("Ошибка запуска драйвера:", err)
 		return nil, err
@@ -21,10 +24,10 @@ func Init(dbFile string) (*sql.DB, error) {
 		title VARCHAR NOT NULL DEFAULT "",
 		repeat VARCHAR NOT NULL DEFAULT ""
 	);`
-	_, err = db.Exec(schema)
+	_, err = DB.Exec(schema)
 	if err != nil {
 		log.Println("Ошибка создания таблицы:", err)
 		return nil, err
 	}
-	return db, nil
+	return DB, nil
 }
