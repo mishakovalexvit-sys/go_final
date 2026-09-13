@@ -8,7 +8,6 @@ import (
 	db "main.go/pkg/db"
 )
 
-
 func main() {
 	dbFile := "scheduler.db"
 	database, err := db.Init(dbFile)

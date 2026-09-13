@@ -49,7 +49,8 @@ func AddTaskHandler(w http.ResponseWriter, r *http.Request) {
 		writeJson(w, http.StatusBadRequest, map[string]string{"error": "Не указан заголовок задачи"})
 		return
 	}
-	if checkDate(&task) != nil {
+	err = checkDate(&task)
+	if err != nil {
 		writeJson(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
 		return
 	}
