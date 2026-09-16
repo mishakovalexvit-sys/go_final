@@ -1,6 +1,7 @@
 package db
 
 import (
+	"errors"
 	"fmt"
 )
 type Task struct {
@@ -69,4 +70,24 @@ func UpdateTask(task *Task) error{
     }
     return nil
 
+}
+func DeleteTask(id string) error{
+	query := `DELETE FROM scheduler WHERE id = ?`
+	res, err := DB.Exec(query, id)
+	if err != nil{
+		return err
+	}
+	count, err := res.RowsAffected()
+	if err != nil{
+		return err
+	}
+	if count == 0 {
+		return errors.New("задача не найдена")
+	}
+	return nil
+}
+func UpdateDate(next string, id string) error {
+	query := `UPDATE scheduler SET date = ? WHERE id = ?`
+	_, err := DB.Exec(query, next, id)
+	return err
 }
