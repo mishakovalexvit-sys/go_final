@@ -10,19 +10,19 @@ import (
 
 const layout = "20060102"
 
-func NextDate(now time.Time, dstart string, repeat string) (string, error){
+func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 	date, err := time.Parse(layout, dstart)
-	if err != nil{
+	if err != nil {
 		return "", err
 	}
 	rules := strings.Split(repeat, " ")
-	switch{
+	switch {
 	case rules[0] == "d" && len(rules) == 2:
 		interval, err := strconv.Atoi(rules[1])
-		if err != nil{
+		if err != nil {
 			return "", err
 		}
-		if interval > 400 || interval <= 0{
+		if interval > 400 || interval <= 0 {
 			return "", errors.New("the interval should be from 1 to 400.")
 		}
 		for {
@@ -41,11 +41,11 @@ func NextDate(now time.Time, dstart string, repeat string) (string, error){
 	default:
 		return "", errors.New("incorrect format")
 	}
-	
+
 	return date.Format(layout), nil
 }
 
-func nextDayHandler(w http.ResponseWriter, r *http.Request){
+func nextDayHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Метод не поддерживается", http.StatusMethodNotAllowed)
 		return
@@ -56,19 +56,19 @@ func nextDayHandler(w http.ResponseWriter, r *http.Request){
 	var now time.Time
 	var err error
 	var nextDate string
-	if nowStr == ""{
+	if nowStr == "" {
 		now = time.Now()
-	}else{
+	} else {
 		now, err = time.Parse(layout, nowStr)
-		if err != nil{
+		if err != nil {
 			http.Error(w, "Invalid date format now", http.StatusBadRequest)
 			return
 		}
 	}
 	nextDate, err = NextDate(now, dateStr, repeatStr)
-	if err != nil{
+	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	w.Write([]byte(nextDate)) 
+	w.Write([]byte(nextDate))
 }

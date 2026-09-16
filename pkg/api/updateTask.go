@@ -6,6 +6,7 @@ import (
 
 	"main.go/pkg/db"
 )
+
 func UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
 	var task db.Task
 	err := json.NewDecoder(r.Body).Decode(&task)

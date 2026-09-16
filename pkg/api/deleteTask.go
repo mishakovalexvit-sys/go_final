@@ -5,14 +5,15 @@ import (
 
 	"main.go/pkg/db"
 )
-func DeleteTaskHandler(w http.ResponseWriter, r *http.Request){
+
+func DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
 	id := r.FormValue("id")
-	if id == ""{
+	if id == "" {
 		writeJson(w, http.StatusBadRequest, map[string]string{"error": "Не указан идентификатор"})
 		return
 	}
 	err := db.DeleteTask(id)
-	if err != nil{
+	if err != nil {
 		writeJson(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
 		return
 	}
