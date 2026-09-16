@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 )
+
 type Task struct {
 	ID      string `json:"id"`
 	Date    string `json:"date"`
@@ -52,33 +53,33 @@ func GetTask(id string) (*Task, error) {
 	}
 	return &t, nil
 }
-func UpdateTask(task *Task) error{
+func UpdateTask(task *Task) error {
 	// параметры пропущены, не забудьте указать WHERE
-    query := `UPDATE scheduler SET date = ?, title = ?, comment = ?, repeat = ? WHERE id = ?`
-    res, err := DB.Exec(query, task.Date, task.Title, task.Comment, task.Repeat, task.ID)
-    if err != nil {
-        return err
-    }
-    // метод RowsAffected() возвращает количество записей к которым 
-    // была применена SQL команда 
-    count, err := res.RowsAffected()
-    if err != nil {
-        return err
-    }
-    if count == 0 {
-        return fmt.Errorf(`incorrect id for updating task`)
-    }
-    return nil
+	query := `UPDATE scheduler SET date = ?, title = ?, comment = ?, repeat = ? WHERE id = ?`
+	res, err := DB.Exec(query, task.Date, task.Title, task.Comment, task.Repeat, task.ID)
+	if err != nil {
+		return err
+	}
+	// метод RowsAffected() возвращает количество записей к которым
+	// была применена SQL команда
+	count, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if count == 0 {
+		return fmt.Errorf(`incorrect id for updating task`)
+	}
+	return nil
 
 }
-func DeleteTask(id string) error{
+func DeleteTask(id string) error {
 	query := `DELETE FROM scheduler WHERE id = ?`
 	res, err := DB.Exec(query, id)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 	count, err := res.RowsAffected()
-	if err != nil{
+	if err != nil {
 		return err
 	}
 	if count == 0 {
