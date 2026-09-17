@@ -19,7 +19,7 @@ func DoneTaskHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	task, err := db.GetTask(id)
 	if err != nil {
-		writeJson(w, http.StatusBadRequest, map[string]string{"error": "Задача не найдена"})
+		writeJson(w, http.StatusNotFound, map[string]string{"error": "Задача не найдена"})
 		return
 	}
 	if task.Repeat == "" {

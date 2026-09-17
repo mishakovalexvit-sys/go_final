@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"time"
 
@@ -56,7 +57,8 @@ func AddTaskHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	id, err := db.AddTask(&task)
 	if err != nil {
-		writeJson(w, http.StatusInternalServerError, map[string]string{"error": "Ошибка сохранения в базу данных: " + err.Error()})
+		log.Println(err)
+		writeJson(w, http.StatusInternalServerError, map[string]string{"error": "Ошибка сохранения в базу данных"})
 		return
 	}
 	writeJson(w, http.StatusOK, map[string]any{"id": id})
